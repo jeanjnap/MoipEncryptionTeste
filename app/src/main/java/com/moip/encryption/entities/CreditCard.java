@@ -1,4 +1,4 @@
-package com.android.moip.encryption.entities;
+package com.moip.encryption.entities;
 
 import android.util.Base64;
 import android.util.Log;
@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
 
 import javax.crypto.Cipher;
 
-import com.android.moip.encryption.exception.MoipEncryptionException;
+import com.moip.encryption.exception.MoipEncryptionException;
 
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;

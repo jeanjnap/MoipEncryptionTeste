@@ -1,4 +1,4 @@
-package com.android.moip.encryption.entities.types;
+package com.moip.encryption.entities.types;
 
 @Deprecated
 public enum CreditCardBrand {

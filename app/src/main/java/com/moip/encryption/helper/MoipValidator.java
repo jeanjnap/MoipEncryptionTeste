@@ -1,4 +1,4 @@
-package com.android.moip.encryption.helper;
+package com.moip.encryption.helper;
 
 import br.com.moip.creditcard.Brands;
 import com.android.moip.encryption.entities.types.CreditCardBrand;

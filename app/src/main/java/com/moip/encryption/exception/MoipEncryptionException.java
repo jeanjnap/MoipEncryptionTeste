@@ -1,4 +1,4 @@
-package com.android.moip.encryption.exception;
+package com.moip.encryption.exception;
 
 
 public class MoipEncryptionException extends Exception {

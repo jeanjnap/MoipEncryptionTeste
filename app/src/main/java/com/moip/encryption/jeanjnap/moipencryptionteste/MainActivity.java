@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.moip.encryption.entities.CreditCard;
+import com.moip.encryption.exception.MoipEncryptionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,12 +53,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void criptografar() {
+
+        String cvcTxt, numberTxt, expMTxt, expYTxt;
+
+        cvcTxt = String.valueOf(cvc.getText());
+        numberTxt = String.valueOf(number.getText());
+        expMTxt = String.valueOf(expM.getText());
+        expYTxt = String.valueOf(expY.getText());
         
-        com.android.moip.encryption.entities.CreditCard creditCard = new com.android.moip.encryption.entities.CreditCard();
-        creditCard.setCvc("123");
-        creditCard.setNumber("5555666677778884");
-        creditCard.setExpirationMonth("12");
-        creditCard.setExpirationYear("2018");
+        CreditCard creditCard = new CreditCard();
+        creditCard.setCvc(cvcTxt);
+        creditCard.setNumber(numberTxt);
+        creditCard.setExpirationMonth(expMTxt);
+        creditCard.setExpirationYear(expYTxt);
         creditCard.setPublicKey(PUBLIC_KEY);
 
         String hashTxt = "";
@@ -65,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             hashTxt = creditCard.encrypt();
             Log.i("RESULT", "Hash: \n"+ hashTxt);
             hash.setText(hashTxt);
-        }catch(com.android.moip.encryption.exception.MoipEncryptionException mee){
+        }catch(MoipEncryptionException mee){
             Log.i("RESULT", "Erro ao criptografar cartão:\n" + mee.getMessage());
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);

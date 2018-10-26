@@ -5,13 +5,21 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+
+import java.security.Security;
+
 import br.com.moip.encryption.entities.CreditCard;
+import br.com.moip.encryption.entities.types.CreditCardBrand;
 import br.com.moip.encryption.exception.MoipEncryptionException;
+import br.com.moip.encryption.helper.MoipValidator;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -51,9 +59,22 @@ public class MainActivity extends AppCompatActivity {
                 criptografar();
             }
         });
+        getBrand();
+    }
+
+    private void getBrand() {
+        String numero = String.valueOf(number.getText());
+
+
+        CreditCardBrand brandObj = MoipValidator.quicklyBrand(numero);
+        String brandStr = brandObj.getDescription();
+
+        brand.setText(brandStr);
+
     }
 
     private void criptografar() {
+        getBrand();
 
         String cvcTxt, numberTxt, expMTxt, expYTxt;
 
@@ -64,12 +85,32 @@ public class MainActivity extends AppCompatActivity {
 
         String hashTxt = "";
 
+        Security.addProvider(new BouncyCastleProvider());
+
         CreditCard creditCard = new CreditCard();
         creditCard.setCvc(cvcTxt);
         creditCard.setNumber(numberTxt);
         creditCard.setExpirationMonth(expMTxt);
         creditCard.setExpirationYear(expYTxt);
         creditCard.setPublicKey(PUBLIC_KEY);
+
+        number.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String numero = String.valueOf(number.getText());
+
+                if(numero.length() >= 4) {
+                    getBrand();
+                }
+            }
+        });
 
         try{
             hashTxt = creditCard.encrypt();
